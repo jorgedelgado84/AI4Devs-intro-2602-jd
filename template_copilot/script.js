@@ -15,7 +15,7 @@
     const MAX_LENGTH = 1000;
 
     /**
-     * Safely reverses a string
+     * Safely reverses a string using Intl.Segmenter for proper Unicode grapheme handling
      * @param {string} str - The string to reverse
      * @returns {string} - The reversed string
      */
@@ -25,9 +25,17 @@
             throw new TypeError('Input must be a string');
         }
 
-        // Use array spread and reverse method for safe reversal
-        // This handles Unicode characters correctly
-        return [...str].reverse().join('');
+        // Use Intl.Segmenter for proper Unicode grapheme cluster segmentation
+        // This correctly handles complex Unicode characters, emoji, and combining marks
+        try {
+            const segmenter = new Intl.Segmenter(undefined, { granularity: 'grapheme' });
+            const graphemes = Array.from(segmenter.segment(str), segment => segment.segment);
+            return graphemes.reverse().join('');
+        } catch (error) {
+            // Fallback for browsers that don't support Intl.Segmenter
+            console.warn('Intl.Segmenter not available, using array spread method:', error);
+            return [...str].reverse().join('');
+        }
     }
 
     /**

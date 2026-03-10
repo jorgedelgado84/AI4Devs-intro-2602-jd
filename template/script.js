@@ -9,7 +9,7 @@
  *  3. Output via textContent only (never innerHTML / insertAdjacentHTML).
  *  4. Input sanitised: control chars and zero-width chars stripped.
  *  5. Hard character limit enforced in JS (mirrors HTML maxlength).
- *  6. Unicode-safe reversal using Array.from() to handle surrogate pairs.
+ *  6. Unicode-safe reversal using Intl.Segmenter to handle grapheme clusters.
  *  7. Debounced input handler to limit processing on rapid keystrokes.
  *  8. Object.freeze on config to prevent runtime mutation.
  */
@@ -47,10 +47,15 @@
   }
 
   /**
-   * Unicode-safe string reversal.
-   * Array.from respects surrogate pairs (emoji, CJK ext-B, etc.).
+   * Unicode-safe string reversal using Intl.Segmenter (grapheme clusters).
+   * Handles combined emoji (👨‍👩‍👧), flags (🇺🇸), skin tones, etc. correctly.
+   * Falls back to Array.from (surrogate-pair-safe) if Segmenter is unavailable.
    */
   function reverseString(str) {
+    if (typeof Intl !== "undefined" && Intl.Segmenter) {
+      const segmenter = new Intl.Segmenter();
+      return Array.from(segmenter.segment(str), s => s.segment).reverse().join("");
+    }
     return Array.from(str).reverse().join("");
   }
 
