@@ -8,6 +8,7 @@ Create a web for reverse string I write a text for example ABCDEF and the web si
 Separate in two files for code index.html and script.js
 #style
 dark style 
+not use buttons 
 #technolgies allowed
 HTML, Javascript, CSS4
 #security

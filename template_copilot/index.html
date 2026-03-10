@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reverse String Application</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f1419 0%, #1a1f2e 50%, #0f1d3d 100%);
+            color: #e0e0e0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(30, 35, 50, 0.95);
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+            max-width: 600px;
+            width: 100%;
+            border: 1px solid rgba(100, 150, 200, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 35px;
+            font-size: 32px;
+            color: #00d4ff;
+            letter-spacing: 1px;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .input-group {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #a8d5ff;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid rgba(100, 150, 200, 0.3);
+            border-radius: 6px;
+            background: rgba(15, 20, 35, 0.8);
+            color: #e0e0e0;
+            font-size: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Courier New', monospace;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #00d4ff;
+            background: rgba(15, 20, 35, 0.95);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.25);
+        }
+
+        input[type="text"]::placeholder {
+            color: #666666;
+        }
+
+        .output-group {
+            background: rgba(15, 20, 35, 0.8);
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid rgba(100, 150, 200, 0.2);
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .output-label {
+            font-size: 12px;
+            color: #a8d5ff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        #reversedText {
+            color: #00ff88;
+            font-size: 18px;
+            word-break: break-all;
+            font-weight: 500;
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+        }
+
+        .empty-state {
+            color: #666666;
+            font-size: 14px;
+            font-style: italic;
+        }
+
+        .info-text {
+            margin-top: 25px;
+            padding: 15px;
+            background: rgba(0, 212, 255, 0.08);
+            border-left: 3px solid #00d4ff;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #a0a0a0;
+            line-height: 1.7;
+        }
+
+        .counter {
+            font-size: 11px;
+            color: #777777;
+            margin-top: 8px;
+            text-align: right;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 26px;
+                margin-bottom: 25px;
+            }
+
+            input[type="text"],
+            #reversedText {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Reverse String</h1>
+        
+        <div class="input-group">
+            <label for="inputText">Enter Text:</label>
+            <input 
+                type="text" 
+                id="inputText" 
+                placeholder="Type your text here... e.g., ABCDEF"
+                maxlength="1000"
+                spellcheck="false"
+                aria-label="Text input for reversal"
+            />
+        </div>
+
+        <div class="output-group">
+            <div class="output-label">Reversed Text:</div>
+            <div id="reversedText" class="empty-state" aria-live="polite" aria-label="Reversed output">Start typing to see your text reversed...</div>
+            <div class="counter"><span id="charCount">0</span> / 1000 characters</div>
+        </div>
+
+        <div class="info-text">
+            Real-time string reversal. Type or paste text to instantly see your text reversed. No data is sent to any server. Secure and private.
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
