@@ -1,105 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reverse String</title>
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #0f172a;
-    font-family: 'Segoe UI', sans-serif;
-    color: #e2e8f0;
-  }
-  .card {
-    background: #1e293b;
-    border-radius: 16px;
-    padding: 40px;
-    width: 90%;
-    max-width: 500px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-  }
-  h1 {
-    font-size: 1.6rem;
-    text-align: center;
-    margin-bottom: 8px;
-    background: linear-gradient(135deg, #38bdf8, #a78bfa);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  p.sub {
-    text-align: center;
-    color: #94a3b8;
-    font-size: 0.9rem;
-    margin-bottom: 28px;
-  }
-  label { font-size: 0.85rem; color: #94a3b8; display: block; margin-bottom: 6px; }
-  input {
-    width: 100%;
-    padding: 14px 16px;
-    border: 2px solid #334155;
-    border-radius: 10px;
-    background: #0f172a;
-    color: #f1f5f9;
-    font-size: 1.1rem;
-    outline: none;
-    transition: border-color 0.2s;
-    letter-spacing: 1px;
-  }
-  input:focus { border-color: #38bdf8; }
-  .result-box {
-    margin-top: 24px;
-    background: #0f172a;
-    border: 2px solid #334155;
-    border-radius: 10px;
-    padding: 14px 16px;
-    min-height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: border-color 0.3s;
-  }
-  .result-box.active { border-color: #a78bfa; }
-  .result-text {
-    font-size: 1.3rem;
-    font-weight: 600;
-    letter-spacing: 2px;
-    background: linear-gradient(135deg, #a78bfa, #38bdf8);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    word-break: break-all;
-    text-align: center;
-  }
-  .placeholder { color: #475569; font-size: 0.95rem; }
-  .arrow {
-    text-align: center;
-    margin-top: 18px;
-    font-size: 1.4rem;
-    color: #475569;
-    animation: bounce 1.5s infinite;
-  }
-  @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(5px); }
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'none'; font-src 'none'; connect-src 'none'; form-action 'none'; base-uri 'none';">
+  <meta name="referrer" content="no-referrer">
+  <title>Reverse String</title>
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* ── Custom Properties ── */
+    :root {
+      --bg-body:    #0b0f19;
+      --bg-card:    #141b2d;
+      --bg-input:   #0b0f19;
+      --border:     #1e2a45;
+      --border-focus:#38bdf8;
+      --border-result:#a78bfa;
+      --text:       #e2e8f0;
+      --text-muted: #64748b;
+      --gradient-a: #38bdf8;
+      --gradient-b: #a78bfa;
+      --radius:     12px;
+      --shadow:     0 25px 60px rgba(0, 0, 0, .5);
+    }
+
+    /* ── Base ── */
+    body {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-body);
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      color: var(--text);
+      padding: 1rem;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: clamp(1.5rem, 5vw, 2.5rem);
+      width: min(480px, 100%);
+      box-shadow: var(--shadow);
+    }
+
+    /* ── Heading ── */
+    .card__title {
+      font-size: clamp(1.3rem, 4vw, 1.7rem);
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: .35rem;
+      background: linear-gradient(135deg, var(--gradient-a), var(--gradient-b));
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .card__subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: .88rem;
+      margin-bottom: 1.75rem;
+    }
+
+    /* ── Label ── */
+    .field-label {
+      display: block;
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: .4rem;
+    }
+
+    /* ── Input ── */
+    .field-input {
+      width: 100%;
+      padding: .85rem 1rem;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg-input);
+      color: var(--text);
+      font-size: 1.05rem;
+      letter-spacing: .5px;
+      outline: none;
+      transition: border-color .25s ease, box-shadow .25s ease;
+    }
+    .field-input:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, .15);
+    }
+
+    /* ── Divider Arrow ── */
+    .divider {
+      text-align: center;
+      padding: 1rem 0 .25rem;
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      user-select: none;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: .4; transform: translateY(0); }
+      50%      { opacity: 1;  transform: translateY(4px); }
+    }
+
+    /* ── Result Box ── */
+    .result-box {
+      margin-top: .5rem;
+      background: var(--bg-input);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: .85rem 1rem;
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color .3s ease, box-shadow .3s ease;
+    }
+    .result-box--active {
+      border-color: var(--border-result);
+      box-shadow: 0 0 0 3px rgba(167, 139, 250, .12);
+    }
+
+    /* ── Result Text ── */
+    .result-text {
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      word-break: break-all;
+      text-align: center;
+      background: linear-gradient(135deg, var(--gradient-b), var(--gradient-a));
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .result-placeholder {
+      color: var(--text-muted);
+      font-size: .9rem;
+      font-style: italic;
+    }
+
+    /* ── Character counter ── */
+    .char-count {
+      text-align: right;
+      font-size: .75rem;
+      color: var(--text-muted);
+      margin-top: .35rem;
+      font-variant-numeric: tabular-nums;
+    }
+    .char-count--warn { color: #f59e0b; }
+    .char-count--limit { color: #ef4444; }
+
+    /* ── Footer ── */
+    .card__footer {
+      margin-top: 1.5rem;
+      text-align: center;
+      font-size: .72rem;
+      color: var(--text-muted);
+      opacity: .6;
+    }
+  </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Reverse String</h1>
-    <p class="sub">Type anything and see it reversed instantly</p>
-    <label>Your text</label>
-    <input type="text" id="inp" placeholder="e.g. ABCDEF" autofocus>
-    <div class="arrow">↓</div>
-    <label style="margin-top:12px">Reversed</label>
-    <div class="result-box" id="box">
-      <span class="placeholder" id="out">Start typing…</span>
+  <main class="card" role="main">
+    <h1 class="card__title">Reverse String</h1>
+    <p class="card__subtitle">Type anything and see it reversed instantly</p>
+
+    <label class="field-label" for="inputText">Your text</label>
+    <input
+      class="field-input"
+      type="text"
+      id="inputText"
+      placeholder="e.g. ABCDEF"
+      maxlength="500"
+      autocomplete="off"
+      spellcheck="false"
+      autofocus
+    >
+    <div class="char-count" id="charCount" aria-live="polite">0 / 500</div>
+
+    <div class="divider" aria-hidden="true">↓</div>
+
+    <label class="field-label">Reversed</label>
+    <div class="result-box" id="resultBox" aria-live="polite" aria-atomic="true">
+      <span class="result-placeholder" id="resultText">Start typing…</span>
     </div>
-  </div>
+
+    <p class="card__footer">Input is sanitised &amp; limited to 500 chars. No data is transmitted.</p>
+  </main>
 
   <script src="script.js"></script>
 </body>
