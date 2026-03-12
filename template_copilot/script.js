@@ -40,6 +40,7 @@
 
     /**
      * Sanitizes input to prevent code injection
+     * Removes control characters and zero-width characters before enforcing length limits
      * @param {string} input - The input to sanitize
      * @returns {string} - The sanitized input
      */
@@ -49,12 +50,20 @@
             return '';
         }
 
+        // Remove control characters and zero-width characters
+        // Regex pattern strips C0/C1 control chars and common zero-width / bidi chars
+        // C0: \x00-\x08\x0B\x0C\x0E-\x1F
+        // C1: \x7F-\x9F
+        // Zero-width/bidi: \u200B-\u200F\u2028-\u202F\uFEFF
+        const SANITIZE_RE = /[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F\u200B-\u200F\u2028-\u202F\uFEFF]/g;
+        const sanitized = input.replace(SANITIZE_RE, '');
+
         // Enforce maximum length
-        if (input.length > MAX_LENGTH) {
-            return input.substring(0, MAX_LENGTH);
+        if (sanitized.length > MAX_LENGTH) {
+            return sanitized.substring(0, MAX_LENGTH);
         }
 
-        return input;
+        return sanitized;
     }
 
     /**
